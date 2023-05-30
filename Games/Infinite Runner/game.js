@@ -112,6 +112,7 @@ class Player {
         this.dy = 0;
         this.gravity = 1;
         this.jumpForce = 15;
+        this.jumpsRemaining = 2;
     }
 
     // Update player position
@@ -123,6 +124,7 @@ class Player {
         if (this.y + this.radius > canvas.height) {
             this.y = canvas.height - this.radius;
             this.dy = 0;
+            this.jumpsRemaining = 2;
         }
     }
 
@@ -137,7 +139,10 @@ class Player {
 
     // Player jump
     jump() {
-        this.dy = -this.jumpForce;
+        if (this.jumpsRemaining > 0) {
+            this.dy = -this.jumpForce;
+            this.jumpsRemaining--;
+        }
     }
 
     // Check collision with obstacle
@@ -153,6 +158,7 @@ class Player {
     reset() {
         this.y = canvas.height / 2;
         this.dy = 0;
+        this.jumpsRemaining = 2;
     }
 }
 
