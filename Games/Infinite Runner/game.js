@@ -1,121 +1,184 @@
-// Game Constants
-const GAME_WIDTH = 800;
-const GAME_HEIGHT = 600;
-const PLAYER_WIDTH = 50;
-const PLAYER_HEIGHT = 50;
-const OBSTACLE_WIDTH = 30;
-const OBSTACLE_HEIGHT = 30;
-const MAX_OBSTACLES = 10;
-const OBSTACLE_SPEED = 5;
-const SCORE_INCREMENT = 1;
+// Game variables
+let canvas, ctx;
+let player, obstacles;
+let score, isGameOver;
 
-// Game State
-let playerX = 0;
-let playerY = GAME_HEIGHT / 2 - PLAYER_HEIGHT / 2;
-let obstacles = [];
-let score = 0;
-let isGameOver = false;
+// Initialize the game
+function init() {
+    canvas = document.getElementById("game-canvas");
+    ctx = canvas.getContext("2d");
+    player = new Player();
+    obstacles = [];
+    score = 0;
+    isGameOver = false;
 
-// Game Elements
-const canvas = document.getElementById('game-canvas');
-const context = canvas.getContext('2d');
-const scoreElement = document.getElementById('score');
-const gameOverElement = document.getElementById('game-over');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight * 0.7;
 
-// Set canvas size
-canvas.width = GAME_WIDTH;
-canvas.height = GAME_HEIGHT;
-
-// Handle player movement
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowUp' && playerY > 0) {
-        playerY -= 10;
-    } else if (event.key === 'ArrowDown' && playerY < GAME_HEIGHT - PLAYER_HEIGHT) {
-        playerY += 10;
-    }
-});
-
-// Game loop
-function gameLoop() {
-    if (!isGameOver) {
-        update();
-        render();
-    }
-
-    requestAnimationFrame(gameLoop);
-}
-
-// Update game state
-function update() {
-    // Generate obstacles
-    if (obstacles.length < MAX_OBSTACLES) {
-        generateObstacle();
-    }
-
-    // Move obstacles
-    obstacles.forEach((obstacle) => {
-        obstacle.x -= OBSTACLE_SPEED;
-
-        // Check for collision with player
-        if (isColliding(obstacle, playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT)) {
-            gameOver();
+    // Event listener to handle player jump
+    canvas.addEventListener("click", () => {
+        if (!isGameOver) {
+            player.jump();
+        } else {
+            resetGame();
         }
     });
 
-    // Remove off-screen obstacles
-    obstacles = obstacles.filter((obstacle) => obstacle.x + OBSTACLE_WIDTH > 0);
+    spawnObstacle();
 
-    // Update score
-    score += SCORE_INCREMENT;
+    // Start the game loop
+    gameLoop();
 }
 
-// Render game
-function render() {
-    // Clear canvas
-    context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+// Reset the game
+function resetGame() {
+    obstacles = [];
+    score = 0;
+    isGameOver = false;
+    player.reset();
+    spawnObstacle();
+}
 
-    // Draw player
-    context.fillStyle = '#ff0000';
-    context.fillRect(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT);
+// Game loop
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw obstacles
-    obstacles.forEach((obstacle) => {
-        context.fillStyle = '#00ff00';
-        context.fillRect(obstacle.x, obstacle.y, OBSTACLE_WIDTH, OBSTACLE_HEIGHT);
-    });
+    // Update player
+    player.update();
+    player.draw();
 
-    // Draw score
-    scoreElement.textContent = 'Score: ' + score;
+    // Update and draw obstacles
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+        obstacles[i].update();
+        obstacles[i].draw();
 
-    // Game over screen
-    if (isGameOver) {
-        gameOverElement.style.display = 'block';
+        // Check for collision with player
+        if (player.checkCollision(obstacles[i])) {
+            endGame();
+            return;
+        }
+
+        // Remove obstacles that have moved off the screen
+        if (obstacles[i].x + obstacles[i].width < 0) {
+            obstacles.splice(i, 1);
+        }
+    }
+
+    // Increment score
+    score++;
+
+    // Display score
+    ctx.font = "24px Arial";
+    ctx.fillStyle = "#fff";
+    ctx.fillText(`Score: ${score}`, 20, 40);
+
+    // Spawn new obstacles
+    if (score % 100 === 0) {
+        spawnObstacle();
+    }
+
+    // Request animation frame
+    if (!isGameOver) {
+        requestAnimationFrame(gameLoop);
     }
 }
 
-// Generate random obstacle
-function generateObstacle() {
-    const minY = 0;
-    const maxY = GAME_HEIGHT - OBSTACLE_HEIGHT;
-    const y = Math.floor(Math.random() * (maxY - minY + 1) + minY);
-    const obstacle = { x: GAME_WIDTH, y };
+// End the game
+function endGame() {
+    isGameOver = true;
+
+    // Display game over message
+    ctx.font = "48px Arial";
+    ctx.fillStyle = "#fff";
+    ctx.fillText("Game Over", canvas.width / 2 - 120, canvas.height / 2);
+
+    // Display final score
+    ctx.font = "24px Arial";
+    ctx.fillText(`Final Score: ${score}`, canvas.width / 2 - 90, canvas.height / 2 + 40);
+}
+
+// Spawn a new obstacle
+function spawnObstacle() {
+    const obstacle = new Obstacle();
     obstacles.push(obstacle);
 }
 
-// Check collision between two rectangles
-function isColliding(obstacle, x, y, width, height) {
-    return (
-        obstacle.x < x + width &&
-        obstacle.x + OBSTACLE_WIDTH > x &&
-        obstacle.y < y + height &&
-        obstacle.y + OBSTACLE_HEIGHT > y
-    );
+// Player class
+class Player {
+    constructor() {
+        this.x = 50;
+        this.y = canvas.height / 2;
+        this.radius = 25;
+        this.dy = 0;
+        this.gravity = 1;
+        this.jumpForce = 15;
+    }
+
+    // Update player position
+    update() {
+        this.dy += this.gravity;
+        this.y += this.dy;
+
+        // Prevent player from falling off the screen
+        if (this.y + this.radius > canvas.height) {
+            this.y = canvas.height - this.radius;
+            this.dy = 0;
+        }
+    }
+
+    // Draw player
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "#f00";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    // Player jump
+    jump() {
+        this.dy = -this.jumpForce;
+    }
+
+    // Check collision with obstacle
+    checkCollision(obstacle) {
+        const dx = this.x - obstacle.x;
+        const dy = this.y - obstacle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance < this.radius + obstacle.radius;
+    }
+
+    // Reset player position
+    reset() {
+        this.y = canvas.height / 2;
+        this.dy = 0;
+    }
 }
 
-// Game over
-function gameOver() {
-    isGameOver = true;
+// Obstacle class
+class Obstacle {
+    constructor() {
+        this.x = canvas.width;
+        this.y = canvas.height - 40;
+        this.radius = 20;
+        this.dx = 5;
+    }
+
+    // Update obstacle position
+    update() {
+        this.x -= this.dx;
+    }
+
+    // Draw obstacle
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "#0f0";
+        ctx.fill();
+        ctx.closePath();
+    }
 }
 
-// Start the game
-gameLoop();
+// Initialize the game when the page loads
+window.addEventListener("load", init);
