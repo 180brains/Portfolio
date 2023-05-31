@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
   <title>My Portfolio</title>
+  <style>
+    .toggle-content {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -24,25 +29,89 @@
   <main>
     <section id="about">
       <h2>About Me</h2>
-      <p>I am a passionate web developer with expertise in front-end technologies. I love creating beautiful and
-        user-friendly websites that provide a great user experience.</p>
+      <p>I am a passionate web developer with expertise in front-end technologies. I love creating beautiful and user-friendly websites that provide a great user experience.</p>
     </section>
 
     <section id="projects">
       <h2>Projects</h2>
       <ul>
         <li>
-          <h3><a href="Games/Bullet Hell/">Bullet Hell</a></h3>
-
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium sem non mauris rutrum, ut rutrum
-            sem
-            tempus. Integer suscipit lectus metus, eget volutpat urna mollis id.</p>
+          <article>
+            <h3><a href="Games/Bullet Hell/">Bullet Hell</a></h3>
+            <p>The Bullet Hell Game is a responsive and visually appealing game that showcases the implementation of key programming concepts and game design elements. Players control a player character using keyboard or touch controls, dodging enemies and shooting bullets. The game features collision detection, random enemy and power-up generation, score tracking, and multiple lives for the player. With smooth animation and intuitive controls, this game demonstrates solid coding practices and offers an engaging gaming experience.</p>
+            <div class="toggle-section">
+              <h4 class="toggle-header">Mini Game Design Document</h4>
+              <div class="toggle-content">
+                <h4>Bullet Hell Game</h4>
+                <p>
+                  1. Concept:<br>
+                  Bullet Hell Game is a fast-paced arcade shooter where the player controls a ship to survive against waves of enemies. The goal is to destroy as many enemies as possible while avoiding enemy projectiles. The game tests the player's reflexes and shooting accuracy in a challenging and intense gameplay experience.
+                </p>
+                <p>
+                  2. Gameplay:<br>
+                  - Player Controls: The player controls a ship using arrow keys or touch controls on mobile devices.<br>
+                  - Shooting Mechanics: Pressing the space bar or tapping the screen shoots a bullet from the ship towards enemies.<br>
+                  - Enemy Mechanics: Enemies spawn at the top of the screen and descend downwards. The player must destroy them by colliding with their ship's bullets.<br>
+                  - Score System: The player's score increases for each enemy destroyed.
+                </p>
+                <p>
+                  3. Features:<br>
+                  - Player Ship: Control a ship represented by a blue rectangle, capable of moving left and right.<br>
+                  - Bullets: Shoot red bullets represented by small red rectangles to eliminate enemies.<br>
+                  - Enemies: Enemies appear as green and purple rectangles, descending from the top of the screen.<br>
+                  - Visuals and Audio: Utilize simple geometric shapes to represent the ship, bullets, and enemies. Clear color distinctions enhance visual clarity.
+                </p>
+                <p>
+                  4. Conclusion:<br>
+                  Bullet Hell Game is an engaging and challenging arcade shooter that provides an intense gameplay experience. With its simple controls and fast-paced mechanics, players will test their reflexes and shooting skills as they strive to achieve the highest score. The game's minimalistic visuals and lack of audio effects keep the focus on the gameplay itself. Whether played in short bursts or longer sessions, Bullet Hell Game offers an exciting and addictive gameplay experience for players seeking an action-packed challenge.
+                </p>
+              </div>
+            </div>
+          </article>
         </li>
         <li>
-          <h3><a href="Games/Infinite Runner/">Infinite Runner</a></h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium sem non mauris rutrum, ut rutrum
-            sem
-            tempus. Integer suscipit lectus metus, eget volutpat urna mollis id.</p>
+          <article>
+            <h3><a href="Games/Infinite Runner/">Infinite Runner</a></h3>
+            <p>"Infinite Runner" is an HTML5 game where the player controls a character that runs endlessly, avoiding obstacles to achieve a high score. The game features smooth animation using the canvas element and incorporates object-oriented programming principles. It utilizes collision detection for obstacle interaction and implements game states for initialization, gameplay, and game over. The player can jump multiple times, and new obstacles spawn at regular intervals.</p>
+            <div class="toggle-section">
+              <h4 class="toggle-header">Mini Game Design Document</h4>
+              <div class="toggle-content">
+                <h4>Infinite Runner</h4>
+                <p>
+                  1. Introduction:<br>
+                  Infinite Runner is an addictive HTML5 game where players control a character running endlessly, dodging obstacles for the highest score. This document outlines the gameplay mechanics, visuals, audio, progression systems, and monetization of the game.
+                </p>
+                <p>
+                  2. Gameplay Mechanics:<br>
+                  Players control the character's vertical movement, jumping to avoid obstacles. Different obstacles, power-ups, and scoring mechanics create an engaging and challenging experience.
+                </p>
+                <p>
+                  3. Visual Design:<br>
+                  The game features immersive landscapes and visually distinct obstacles. Character customization options and evolving environments add variety to the gameplay.
+                </p>
+                <p>
+                  4. Audio Design:<br>
+                  Energetic background music and immersive sound effects accompany player actions, enhancing the game's excitement and responsiveness.
+                </p>
+                <p>
+                  5. Progression System:<br>
+                  The difficulty gradually increases as players progress, offering achievements and unlockable content. This provides goals, depth, and replayability.
+                </p>
+                <p>
+                  6. Monetization:<br>
+                  Infinite Runner follows a free-to-play model with optional in-app purchases. Non-intrusive advertisements can be included to provide rewards or extra lives.
+                </p>
+                <p>
+                  7. Platform and Distribution:<br>
+                  Developed in HTML5, Infinite Runner can be played on desktop browsers and mobile devices. It can be distributed through online portals, app stores, and the developer's website.
+                </p>
+                <p>
+                  8. Conclusion:<br>
+                  Infinite Runner delivers an addictive gameplay experience with simple yet challenging mechanics. It offers visually stunning environments, responsive controls, and a progression system that keeps players engaged. The game caters to casual gamers while providing opportunities for skill improvement and competition. With endless fun and excitement, Infinite Runner is suitable for players of all skill levels.
+                </p>
+              </div>
+            </div>
+          </article>
         </li>
       </ul>
     </section>
@@ -53,8 +122,9 @@
         <li>HTML5</li>
         <li>CSS3</li>
         <li>JavaScript</li>
-        <li>React</li>
-        <li>Node.js</li>
+        <li>PHP</li>
+        <li>Python</li>
+        <li>SQL</li>
         <li>Responsive Design</li>
       </ul>
     </section>
@@ -71,6 +141,8 @@
     <p>&copy; 2023 John Doe. All rights reserved.</p>
   </footer>
 
+  <script src="script.js"></script>
+  
 </body>
 
 </html>
