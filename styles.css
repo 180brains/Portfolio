@@ -1,13 +1,21 @@
 /* Global Styles */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   margin: 0;
 }
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Header */
 
 header {
   background-color: #333;
@@ -16,14 +24,11 @@ header {
 }
 
 nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+  display: flex;
 }
 
 nav ul li {
-  display: inline;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 nav ul li a {
@@ -31,19 +36,77 @@ nav ul li a {
   text-decoration: none;
 }
 
+/* Main */
+
 main {
   padding: 20px;
 }
 
-section {
+/* About Section */
+
+#about {
   margin-bottom: 40px;
 }
+
+/* Projects Section */
+
+#projects article {
+  margin-bottom: 20px;
+}
+
+.toggle-section {
+  margin-top: 10px;
+}
+
+.toggle-header {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.toggle-content {
+  display: none;
+}
+
+.toggle-content.active {
+  display: block;
+}
+
+/* Skills Section */
+
+#skills ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+}
+
+#skills li {
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  color: #333;
+  display: inline-block;
+  margin: 5px;
+  padding: 8px 12px;
+}
+
+/* Contact Section */
+
+#contact p {
+  margin: 10px 0;
+}
+
+/* Footer */
 
 footer {
   background-color: #333;
   color: #fff;
-  padding: 20px;
+  padding: 10px;
   text-align: center;
+  position: fixed; /* Add this line */
+  bottom: 0; /* Add this line */
+  width: 100%; /* Add this line */
 }
 
 /* Media Queries */
