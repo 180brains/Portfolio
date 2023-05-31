@@ -99,7 +99,8 @@ function endGame() {
 
 // Spawn a new obstacle
 function spawnObstacle() {
-    const obstacle = new Obstacle();
+    const obstacleHeight = Math.random() * (canvas.height * 0.4 - 50) + 50; // Random obstacle height between 50 and 40% of canvas height
+    const obstacle = new Obstacle(obstacleHeight);
     obstacles.push(obstacle);
 }
 
@@ -108,11 +109,12 @@ class Player {
     constructor() {
         this.x = 50;
         this.y = canvas.height / 2;
-        this.radius = 25;
+        this.width = 50;
+        this.height = 50;
         this.dy = 0;
         this.gravity = 1;
         this.jumpForce = 15;
-        this.jumpsRemaining = 2;
+        this.jumpsRemaining = 2; // Number of jumps remaining
     }
 
     // Update player position
@@ -121,20 +123,17 @@ class Player {
         this.y += this.dy;
 
         // Prevent player from falling off the screen
-        if (this.y + this.radius > canvas.height) {
-            this.y = canvas.height - this.radius;
+        if (this.y + this.height > canvas.height) {
+            this.y = canvas.height - this.height;
             this.dy = 0;
-            this.jumpsRemaining = 2;
+            this.jumpsRemaining = 2; // Reset jumps when touching the ground
         }
     }
 
     // Draw player
     draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = "#f00";
-        ctx.fill();
-        ctx.closePath();
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
     // Player jump
@@ -147,27 +146,39 @@ class Player {
 
     // Check collision with obstacle
     checkCollision(obstacle) {
-        const dx = this.x - obstacle.x;
-        const dy = this.y - obstacle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const playerLeft = this.x;
+        const playerRight = this.x + this.width;
+        const playerTop = this.y;
+        const playerBottom = this.y + this.height;
 
-        return distance < this.radius + obstacle.radius;
+        const obstacleLeft = obstacle.x;
+        const obstacleRight = obstacle.x + obstacle.width;
+        const obstacleTop = obstacle.y;
+        const obstacleBottom = obstacle.y + obstacle.height;
+
+        return (
+            playerLeft < obstacleRight &&
+            playerRight > obstacleLeft &&
+            playerTop < obstacleBottom &&
+            playerBottom > obstacleTop
+        );
     }
 
     // Reset player position
     reset() {
         this.y = canvas.height / 2;
         this.dy = 0;
-        this.jumpsRemaining = 2;
+        this.jumpsRemaining = 2; // Reset jumps
     }
 }
 
 // Obstacle class
 class Obstacle {
-    constructor() {
+    constructor(height) {
         this.x = canvas.width;
-        this.y = canvas.height - 40;
-        this.radius = 20;
+        this.y = canvas.height - height;
+        this.width = 40;
+        this.height = height;
         this.dx = 5;
     }
 
@@ -178,11 +189,8 @@ class Obstacle {
 
     // Draw obstacle
     draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = "#0f0";
-        ctx.fill();
-        ctx.closePath();
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
 
