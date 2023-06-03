@@ -127,6 +127,7 @@ footer {
   
   main {
     padding: 10px;
+    padding-bottom: 80px; /* Add this line */
   }
   
   h2 {
